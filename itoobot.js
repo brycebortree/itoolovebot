@@ -182,4 +182,13 @@ postTweet = function(botData, cb) {
   // }
 }
 
-run();
+// run();
+
+setInterval(function() {
+  try {
+    run();
+  }
+  catch (e) {
+    console.log(e);
+  }
+}, 60000 * 6);
