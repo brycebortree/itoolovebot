@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.1",
+    "dotenv": "^2.0.0",
     "lodash": "^4.15.0",
     "node-rest-client": "^2.0.1",
     "twit": "^2.2.4",
