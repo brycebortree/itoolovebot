@@ -66,7 +66,7 @@ extractWordsFromTweet = function(botData, cb) {
 
   botData.tweetWordList = botData.tweet.split(excludeNonAlpha);
 
-  var excludedElements = ['and','the','pick','select','picking'];
+  var excludedElements = ['and','the','pick','select','picking','much','love'];
   botData.tweetWordList = _.reject(botData.tweetWordList, function(w) {
     return _.includes(excludedElements, w);
   });
@@ -123,8 +123,20 @@ findAdjNouns = function(botData, cb) {
   if (botData.nounList.length > 0 && botData.adjList.length > 0) {
     cb(null, botData);
   } else {
-    cb('There is no adjective and or noun.', botData);
+    cb('There is no adjective and/or noun.', botData);
   }
+}
+
+getSynonyms = function(botData, cb){
+  botData.synAdjList = [];
+  botData.synNounList = [];
+
+  _.each(botData.nounList, function(wordInfo){
+    var word      = wordInfo[0].word;
+    var synonym   = wordInfo[0].relatedWords;
+
+    console.log(synonym);
+  });
 }
 
 
@@ -137,9 +149,9 @@ formatTweet = function(botData, cb) {
     botData.adjNoun.push(word);
   });
 
-  var tweetLine1    = botData.adjNoun.join(' ');
-  var username    = botData.tweetUsername;
-  botData.tweetBlock = 'I, too, love ' + tweetLine1 + 's, @' + username + '.';
+  var tweetLine1      = botData.adjNoun.join(' ');
+  var username        = botData.tweetUsername;
+  botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️';
   cb(null, botData);
 }
 
