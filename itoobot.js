@@ -127,18 +127,36 @@ findAdjNouns = function(botData, cb) {
   }
 }
 
-getSynonyms = function(botData, cb){
-  botData.synAdjList = [];
-  botData.synNounList = [];
 
-  _.each(botData.nounList, function(wordInfo){
-    var word      = wordInfo[0].word;
-    var synonym   = wordInfo[0].relatedWords;
+//continue working
+getSynonyms = function(word, cb){
+  var client = new Client();
+  var wordnikWordURLPart1   = 'http://api.wordnik.com:80/v4/word.json/';
+  var wordnikWordURLPart2   = '/relatedWords?limit=1&includeRelated=false&useCanonical=true&includeTags=false&api_key=';
+  var args = {headers: {'Accept':'application/json'}};
+  var wordnikURL = wordnikWordURLPart1 + word.toLowerCase() + wordnikWordURLPart2 + wordnikKey;
 
-    console.log(synonym);
+  client.get(wordnikURL, args, function (data, response) {
+    if (response.statusCode === 200) {
+      console.log(data);
+      var result = data;
+      if (result.length) {
+        cb(null, result);
+      } else {
+        cb(null, null);
+      }
+    } else {
+      cb(null, null);
+    }
+  });
+};
+
+getAllSynonyms = function(botData, cb) {
+  async.map(botData.tweetWordList, getWordData, function(err, results){
+    botData.wordList = results;
+    cb(err, botData);
   });
 }
-
 
 formatTweet = function(botData, cb) {
   botData.adjNoun = [];
