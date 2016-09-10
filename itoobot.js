@@ -66,7 +66,7 @@ extractWordsFromTweet = function(botData, cb) {
 
   botData.tweetWordList = botData.tweet.split(excludeNonAlpha);
 
-  var excludedElements = ['and','the','pick','select','picking','much','love'];
+  var excludedElements = ['and','the','pick','select','picking','much','love','your', 'just'];
   botData.tweetWordList = _.reject(botData.tweetWordList, function(w) {
     return _.includes(excludedElements, w);
   });
@@ -169,27 +169,26 @@ formatTweet = function(botData, cb) {
 
   var tweetLine1      = botData.adjNoun.join(' ');
   var username        = botData.tweetUsername;
-  botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️';
+  botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️ ';
   cb(null, botData);
 }
 
 postTweet = function(botData, cb) {
   console.log(botData);
-  console.log(botData.baseTweet);
-  // if (!wordFilter.blacklisted(botData.tweetBlock)) {
-  //   t.post('statuses/update', {status: botData.tweetBlock}, function(err, data, response) {
-  //     cb(err, botData);
-  //   });
-  // }
+  if (!wordFilter.blacklisted(botData.tweetBlock)) {
+    t.post('statuses/update', {status: botData.tweetBlock}, function(err, data, response) {
+      cb(err, botData);
+    });
+  }
 }
 
-run();
+// run();
 
-// setInterval(function() {
-//   try {
-//     run();
-//   }
-//   catch (e) {
-//     console.log(e);
-//   }
-// }, 60000 * 60);
+setInterval(function() {
+  try {
+    run();
+  }
+  catch (e) {
+    console.log(e);
+  }
+}, 60000 * 60);
