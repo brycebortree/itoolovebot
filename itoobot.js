@@ -4,19 +4,7 @@ var Twit        = require('twit');
 var async       = require('async');
 var wordFilter  = require('wordfilter');
 var env         = require('dotenv').config();
-var express     = require('express');
-var app         = express();
 
-
-app.set('port', (process.env.PORT || 5000));
-
-//For avoidong Heroku $PORT error
-app.get('/', function(request, response) {
-    var result = 'I, too, love apps running.'
-    response.send(result);
-}).listen(app.get('port'), function() {
-    console.log('App is running, server is listening on port ', app.get('port'));
-});
 
 var t = new Twit({
   consumer_key: env.CONSUMER_KEY,
@@ -187,6 +175,7 @@ formatTweet = function(botData, cb) {
 
 postTweet = function(botData, cb) {
   console.log(botData);
+  console.log(botData.baseTweet);
   // if (!wordFilter.blacklisted(botData.tweetBlock)) {
   //   t.post('statuses/update', {status: botData.tweetBlock}, function(err, data, response) {
   //     cb(err, botData);
@@ -194,13 +183,13 @@ postTweet = function(botData, cb) {
   // }
 }
 
-// run();
+run();
 
-setInterval(function() {
-  try {
-    run();
-  }
-  catch (e) {
-    console.log(e);
-  }
-}, 60000 * 6);
+// setInterval(function() {
+//   try {
+//     run();
+//   }
+//   catch (e) {
+//     console.log(e);
+//   }
+// }, 60000 * 60);
