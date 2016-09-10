@@ -1,1 +1,1 @@
-worker: node itoobot.js
+main: node itoobot.js

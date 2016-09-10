@@ -4,7 +4,13 @@ var Twit        = require('twit');
 var async       = require('async');
 var wordFilter  = require('wordfilter');
 var env         = require('dotenv').config();
+var http        = require('http');
 
+handle = (req, res) -> res.end "hit"
+
+server = http.createServer handle
+
+server.listen process.env.PORT || 5000;
 
 var t = new Twit({
   consumer_key: env.CONSUMER_KEY,
@@ -182,13 +188,13 @@ postTweet = function(botData, cb) {
   }
 }
 
-// run();
+run();
 
-setInterval(function() {
-  try {
-    run();
-  }
-  catch (e) {
-    console.log(e);
-  }
-}, 60000 * 10);
+// setInterval(function() {
+//   try {
+//     run();
+//   }
+//   catch (e) {
+//     console.log(e);
+//   }
+// }, 60000 * 10);
