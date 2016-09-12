@@ -169,7 +169,11 @@ formatTweet = function(botData, cb) {
 
   var tweetLine1      = botData.adjNoun.join(' ');
   var username        = botData.tweetUsername;
-  botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️ ';
+
+  if(tweetLine1[tweetLine1.length] === 's'){
+    botData.tweetBlock = 'I, too, love ' + tweetLine1 + ', ' + username + '. ❤️'
+  }
+  botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️';
   cb(null, botData);
 }
 
