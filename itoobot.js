@@ -15,7 +15,6 @@ var t = new Twit({
 
 var wordnikKey = env.WORDNIK_API_KEY
 
-
 run = function() {
   async.waterfall([
     getPublicTweet,
@@ -170,10 +169,11 @@ formatTweet = function(botData, cb) {
   var tweetLine1      = botData.adjNoun.join(' ');
   var username        = botData.tweetUsername;
 
-  if(tweetLine1[tweetLine1.length] === 's'){
+  if(tweetLine1[tweetLine1.length - 1] === 's'){
     botData.tweetBlock = 'I, too, love ' + tweetLine1 + ', ' + username + '. ❤️'
+  } else{
+    botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️';
   }
-  botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️';
   cb(null, botData);
 }
 
