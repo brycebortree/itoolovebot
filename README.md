@@ -1,3 +1,5 @@
+![I Too Bot in action](./ITooLoveBot.jpg?raw=true "I Too Bot in action")
+
 # ITooLoveBot
 
 A bot that scans tweets for the phrase "I love" and an adjective and noun. The bot then tweets, "I, too, love [adjective][noun]s, [user]."
