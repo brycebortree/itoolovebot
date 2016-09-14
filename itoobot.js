@@ -151,8 +151,8 @@ getSynonyms = function(word, cb){
 };
 
 getAllSynonyms = function(botData, cb) {
-  async.map(botData.tweetWordList, getWordData, function(err, results){
-    botData.wordList = results;
+  async.map(botData.wordList, getWordData, function(err, results){
+    botData.synonymList = results;
     cb(err, botData);
   });
 }
