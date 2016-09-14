@@ -3,7 +3,7 @@
 A bot that scans tweets for the phrase "I love" and an adjective and noun. The bot then tweets, "I, too, love [adjective][noun]s, [user]."
 
 ## Bot in the Wild
-[I Too Love Bot](http://twitter.com/I Too Love Bot)
+[I Too Love Bot](http://twitter.com/ITooLoveBot)
 
 ### Prerequisities
 
