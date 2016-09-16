@@ -65,7 +65,7 @@ extractWordsFromTweet = function(botData, cb) {
 
   botData.tweetWordList = botData.tweet.split(excludeNonAlpha);
 
-  var excludedElements = ['and','the','pick','select','picking','much','love','your', 'just'];
+  var excludedElements = ['and','the','pick','select','picking','much','love','your', 'just', 'birthday', 'crazy', 'happy'];
   botData.tweetWordList = _.reject(botData.tweetWordList, function(w) {
     return _.includes(excludedElements, w);
   });
@@ -111,7 +111,7 @@ findAdjNouns = function(botData, cb) {
     var word            = wordInfo[0].word;
     var partOfSpeech    = wordInfo[0].partOfSpeech;
 
-    if (partOfSpeech == 'noun' || partOfSpeech == 'proper-noun') {
+    if (partOfSpeech == 'noun') {
       botData.nounList.push(word);
     }
     if(partOfSpeech === 'adjective'){
