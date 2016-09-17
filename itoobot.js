@@ -36,7 +36,7 @@ run = function() {
 }
 
 getPublicTweet = function(cb) {
-  t.get('search/tweets', {q: '\"I love\"', count: 1, result_type: 'recent', lang: 'en'}, function(err, data, response) {
+  t.get('search/tweets', {q: '\"I love\" -birthday -happy', count: 1, result_type: 'recent', lang: 'en'}, function(err, data, response) {
     if (!err) {
       var botData = {
         baseTweet       : data.statuses[0].text.toLowerCase(),
