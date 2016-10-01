@@ -21,6 +21,9 @@ run = function() {
     extractWordsFromTweet,
     getAllWordData,
     findAdjNouns,
+    // getSynonyms,
+    // getAdjSynonyms,
+    // getNounSynonyms,
     formatTweet,
     postTweet
   ],
@@ -43,6 +46,7 @@ getPublicTweet = function(cb) {
         tweetID         : data.statuses[0].id_str,
         tweetUsername   : data.statuses[0].user.screen_name
       };
+      console.log(botData);
       cb(null, botData);
     } else {
       console.log("There was an error getting a public Tweet. Abandoning EVERYTHING :(");
@@ -105,13 +109,15 @@ getWordData = function(word, cb) {
 findAdjNouns = function(botData, cb) {
   botData.adjList = [];
   botData.nounList = [];
+  botData.nounSynonyms = [];
+  botData.adjSynonyms = [];
   botData.wordList = _.compact(botData.wordList);
 
   _.each(botData.wordList, function(wordInfo) {
     var word            = wordInfo[0].word;
     var partOfSpeech    = wordInfo[0].partOfSpeech;
 
-    if (partOfSpeech == 'noun') {
+    if (partOfSpeech === 'noun') {
       botData.nounList.push(word);
     }
     if(partOfSpeech === 'adjective'){
@@ -126,14 +132,29 @@ findAdjNouns = function(botData, cb) {
   }
 }
 
-
 //continue working
+getAdjSynonyms = function(botData, cb) {
+  async.map(botData.adjList, getSynonyms, function(err, results){
+    botData.adjSynonyms = results;
+    console.log("Adj Synonyms: ", botData.adjSynonyms);
+    cb(err, botData);
+  });
+}
+
+getNounSynonyms = function(botData, cb) {
+  async.map(botData.nounList, getSynonyms, function(err, results){
+    botData.nounSynonyms = results;
+    console.log("Noun Synonyms: ", botData.nounSynonyms);
+    cb(err, botData);
+  });
+}
+
 getSynonyms = function(word, cb){
   var client = new Client();
   var wordnikWordURLPart1   = 'http://api.wordnik.com:80/v4/word.json/';
   var wordnikWordURLPart2   = '/relatedWords?limit=1&includeRelated=false&useCanonical=true&includeTags=false&api_key=';
   var args = {headers: {'Accept':'application/json'}};
-  var wordnikURL = wordnikWordURLPart1 + word.toLowerCase() + wordnikWordURLPart2 + wordnikKey;
+  var wordnikURL = wordnikWordURLPart1 + word + wordnikWordURLPart2 + wordnikKey;
 
   client.get(wordnikURL, args, function (data, response) {
     if (response.statusCode === 200) {
@@ -150,13 +171,6 @@ getSynonyms = function(word, cb){
   });
 };
 
-getAllSynonyms = function(botData, cb) {
-  async.map(botData.wordList, getWordData, function(err, results){
-    botData.synonymList = results;
-    cb(err, botData);
-  });
-}
-
 formatTweet = function(botData, cb) {
   botData.adjNoun = [];
   _.each(botData.adjList.slice(0,1), function(word) {
@@ -169,10 +183,14 @@ formatTweet = function(botData, cb) {
   var tweetLine1      = botData.adjNoun.join(' ');
   var username        = botData.tweetUsername;
 
+
+
   if(tweetLine1[tweetLine1.length - 1] === 's'){
     botData.tweetBlock = 'I, too, love ' + tweetLine1 + ', ' + username + '. ❤️'
+    // console.log(botData);
   } else{
     botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️';
+    // console.log(botData);
   }
   cb(null, botData);
 }
@@ -186,11 +204,13 @@ postTweet = function(botData, cb) {
   }
 }
 
-setInterval(function() {
-  try {
-    run();
-  }
-  catch (e) {
-    console.log(e);
-  }
-}, 60000 * 40);
+run();
+
+// setInterval(function() {
+//   try {
+//     run();
+//   }
+//   catch (e) {
+//     console.log(e);
+//   }
+// }, 60000 * 40);
