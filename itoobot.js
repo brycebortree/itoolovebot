@@ -187,10 +187,10 @@ formatTweet = function(botData, cb) {
 
   if(tweetLine1[tweetLine1.length - 1] === 's'){
     botData.tweetBlock = 'I, too, love ' + tweetLine1 + ', ' + username + '. ❤️'
-    // console.log(botData);
+    console.log(botData);
   } else{
     botData.tweetBlock  = 'I, too, love ' + tweetLine1 + 's, ' + username + '. ❤️';
-    // console.log(botData);
+    console.log(botData);
   }
   cb(null, botData);
 }
